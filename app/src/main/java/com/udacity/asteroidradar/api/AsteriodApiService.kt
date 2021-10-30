@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.api
 
 
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -12,7 +13,7 @@ private const val BASE_URL = "https://api.nasa.gov/"
 
 //Use Retrofit Builder with ScalarsConverterFactory and BASE_URL
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    //.addConverterFactory(ScalarsConverterFactory.create())
     .baseUrl(BASE_URL)
     .build()
 
@@ -22,7 +23,7 @@ interface neowsApiService {
     fun getProperties(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
-        @Query("api_key") apiKey: String): Call<String>
+        @Query("api_key") apiKey: String): JSONObject
 }
 
 // Create the NeoWs object using Retrofit to implement the NeoWs Service.
