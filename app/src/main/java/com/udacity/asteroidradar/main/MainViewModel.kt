@@ -42,7 +42,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             try{
                 val listResult = neowsApi.retrofitService.getProperties(startDate,endDate,"U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec")
-                _asteriods.value = parseAsteroidsJsonResult(listResult)
+                _asteriods.value = parseAsteroidsJsonResult(JSONObject(listResult))
                 Log.i("MainViewModel","Success: ${_asteriods.value.toString()}")
             } catch (e: Exception) {
                 Log.i("MainViewModel","Failure: ${_asteriods.value.toString()}")
