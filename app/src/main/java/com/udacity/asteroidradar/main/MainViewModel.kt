@@ -1,16 +1,16 @@
 package com.udacity.asteroidradar.main
 
+import android.app.Application
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.AsteroidsRepository
 import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
 import com.udacity.asteroidradar.api.neowsApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.getDatabase
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
@@ -18,37 +18,24 @@ import retrofit2.Response
 import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.N)
-class MainViewModel : ViewModel() {
-
-    //Internal property
-    private val _asteriods = MutableLiveData<ArrayList<Asteroid>>()
-    //External property
-    val asteriods: LiveData<ArrayList<Asteroid>>
-        get() = _asteriods
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 
+    private val database = getDatabase(application)
+    private val AsteroidsRepository = AsteroidsRepository(database)
+
+
+    /**
+     * init{} is called immediately when this ViewModel is created.
+     */
     init {
-        getAsteroidList()
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N) //Annotation for the dates below function below.
-    private fun getAsteroidList(){
-
-        val dates = getNextSevenDaysFormattedDates()
-        val startDate = dates[0]
-        val endDate = dates[7]
-
         viewModelScope.launch {
-            try{
-                val listResult = neowsApi.retrofitService.getProperties(startDate,endDate,"U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec")
-                _asteriods.value = parseAsteroidsJsonResult(JSONObject(listResult))
-                Log.i("MainViewModel","Success: ${_asteriods.value.toString()}")
-            } catch (e: Exception) {
-                Log.i("MainViewModel","Failure: ${_asteriods.value.toString()}")
-            }
-
+            AsteroidsRepository.refreshAsteroids()
         }
-
     }
+
+    val asteroidList = AsteroidsRepository.asteroids
+
+
+
 }

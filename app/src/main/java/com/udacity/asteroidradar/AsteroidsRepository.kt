@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -21,21 +22,27 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
         it.asDomainModel()
     }
 
+    //Get today's date and the date 7 days from now
     @RequiresApi(Build.VERSION_CODES.N)
     val dates = getNextSevenDaysFormattedDates()
     val startDate = dates[0]
     val endDate = dates[7]
 
-
     suspend fun refreshAsteroids(){
         withContext(Dispatchers.IO){ //Dispatcher IO is stating to run on disk, not ram
-            //Get the data from the network and then put it in the database
-            val asteroidList = neowsApi.retrofitService.getProperties(startDate,endDate,"U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec")
-            val formattedAsteroidsList = parseAsteroidsJsonResult(JSONObject(asteroidList))
 
-            database.AsteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
+            try{
+                val asteroidList = neowsApi.retrofitService.getProperties(startDate,endDate,"U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec") //Get the data from the network
+                val formattedAsteroidsList = parseAsteroidsJsonResult(JSONObject(asteroidList))  //Transform JSON into formatted array list.
 
+                //Save list to database
+                database.AsteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
 
+                Log.i("AsteroidsRepository","Success: $formattedAsteroidsList")
+
+            } catch (e: Exception) {
+                Log.i("AsteroidsRepository","Failure: $e")
+            }
         }
     }
 }

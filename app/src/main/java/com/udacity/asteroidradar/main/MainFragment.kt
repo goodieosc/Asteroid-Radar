@@ -26,7 +26,7 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        Log.i("Main Fragment", viewModel.asteriods.toString())
+        //Log.i("MainFragment",viewModel.asteroidList.value.toString())
 
         return binding.root
     }
