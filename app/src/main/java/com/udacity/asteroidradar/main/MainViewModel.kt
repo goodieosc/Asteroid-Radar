@@ -50,18 +50,5 @@ class MainViewModel : ViewModel() {
 
         }
 
-//        neowsApi.retrofitService.getProperties(startDate,endDate,"U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec").enqueue(object : retrofit2.Callback<String> {
-//
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                _asteriods.value = response.body()?.let { parseAsteroidsJsonResult(JSONObject(it)) }
-//                Log.i("MainViewModel","Success: ${_asteriods.value.toString()}")
-//            }
-//
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                //_asteriods.value = "Failure: " + t.message.to
-//                Log.i("MainViewModel","Failure: ${_asteriods.value.toString()}")
-//            }
-//
-//        })
     }
 }

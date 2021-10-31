@@ -25,6 +25,7 @@ data class Asteroid(val id: Long,
 /**
  * Convert Network results to database objects
  */
+@JsonClass(generateAdapter = true)
 fun NetworkAsteroidContainer.asDomainModel(): List<Asteroid> {
     return asteroids.map {
         Asteroid(
@@ -40,8 +41,8 @@ fun NetworkAsteroidContainer.asDomainModel(): List<Asteroid> {
 }
 
 //create an extension function that converts from data transfer objects to database objects:
-fun NetworkAsteroidContainer.asDatabaseModel(): Array<DatabaseAsteroids> {
-    return asteroids.map {
+fun List<Asteroid>.asDatabaseModel(): List<DatabaseAsteroids> {
+    return map {
         DatabaseAsteroids (
             id = it.id,
             codename = it.codename,
@@ -51,5 +52,5 @@ fun NetworkAsteroidContainer.asDatabaseModel(): Array<DatabaseAsteroids> {
             relativeVelocity = it.relativeVelocity,
             distanceFromEarth = it.distanceFromEarth,
             isPotentiallyHazardous = it.isPotentiallyHazardous)
-    }.toTypedArray()
+    }
 }

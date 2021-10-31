@@ -1,6 +1,5 @@
 package com.udacity.asteroidradar.database
 
-import android.provider.MediaStore
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.udacity.asteroidradar.Asteroid
@@ -33,4 +32,6 @@ fun List<DatabaseAsteroids>.asDomainModel(): List<Asteroid> {
             isPotentiallyHazardous = it.isPotentiallyHazardous
         )
     }
+
+
 }
