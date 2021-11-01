@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -18,6 +20,8 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val binding = FragmentMainBinding.inflate(inflater)
 
+
+
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
@@ -26,7 +30,15 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        //Log.i("MainFragment",viewModel.asteroidList.value.toString())
+        //Setup RecyclerView and observe change to live data from repository.
+        val adapter = AsteroidListAdapter()
+        binding.asteroidRecycler.adapter = adapter //Bind recycler in XML to the ListAdapter [RecyclerView adapter with the ViewHolder]
+        viewModel.asteroidList.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                adapter.submitList(it)
+            }
+
+        })
 
         return binding.root
     }
