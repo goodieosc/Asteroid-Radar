@@ -1,7 +1,6 @@
 package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.databinding.AsteroidListItemBinding
 
 //RecyclerView class
 class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>(AsteroidDiffCallback()){
@@ -26,10 +26,10 @@ class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>
     }
 
     //Specific ViewHolder. Can create more of these for different types of data.
-    class ViewHolder private constructor (itemView : View): RecyclerView.ViewHolder(itemView){
-        val asteroidID: TextView = itemView.findViewById(R.id.asteroidIdTextView)
-        val asteroidImpactDate: TextView = itemView.findViewById(R.id.asteroidImpactDateTextView)
-        val asteroidDangerous: ImageView = itemView.findViewById(R.id.asteroidDangerousImage)
+    class ViewHolder private constructor (val binding: AsteroidListItemBinding): RecyclerView.ViewHolder(binding.root){
+        val asteroidID: TextView = binding.asteroidIdTextView
+        val asteroidImpactDate: TextView = binding.asteroidImpactDateTextView
+        val asteroidDangerous: ImageView = binding.asteroidDangerousImage
 
         fun bind(item: Asteroid) {
             val res = itemView.context.resources
@@ -45,9 +45,8 @@ class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.asteroid_list_item, parent, false)
-
-                return ViewHolder(view)
+                val binding = AsteroidListItemBinding.inflate(layoutInflater,parent,false) //Bind to the asteroid_list_item.xml
+                return ViewHolder(binding)
             }
         }
     }
