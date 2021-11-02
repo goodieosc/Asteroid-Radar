@@ -2,13 +2,12 @@ package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.database.DatabaseAsteroids
 import com.udacity.asteroidradar.databinding.AsteroidListItemBinding
 
 //RecyclerView class
@@ -27,18 +26,10 @@ class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>
 
     //Specific ViewHolder. Can create more of these for different types of data.
     class ViewHolder private constructor (val binding: AsteroidListItemBinding): RecyclerView.ViewHolder(binding.root){
-        val asteroidID: TextView = binding.asteroidIdTextView
-        val asteroidImpactDate: TextView = binding.asteroidImpactDateTextView
-        val asteroidDangerous: ImageView = binding.asteroidDangerousImage
 
         fun bind(item: Asteroid) {
-            val res = itemView.context.resources
-            asteroidID.text = item.id.toString()
-            asteroidImpactDate.text = item.closeApproachDate
-
-            if (item.isPotentiallyHazardous) {
-                asteroidDangerous.setImageResource(R.drawable.ic_status_potentially_hazardous)
-            } else asteroidDangerous.setImageResource(R.drawable.ic_status_normal)
+            binding.asteroids = item
+            binding.executePendingBindings()
         }
 
         //Inflate the template for this specific ViewHolder Type
@@ -51,7 +42,12 @@ class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>
         }
     }
 
-    //Diff util for determining is changes have been made to content, if so then they will be refreshed.
+    /**
+     * Callback for calculating the diff between two non-null items in a list.
+     *
+     * Used by ListAdapter to calculate the minumum number of changes between and old list and a new
+     * list that's been passed to `submitList`.
+     */
     class AsteroidDiffCallback : DiffUtil.ItemCallback<Asteroid>() {
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem.id == newItem.id //Just compares the old and new ID.
