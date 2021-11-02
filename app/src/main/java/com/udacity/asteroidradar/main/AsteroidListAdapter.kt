@@ -11,12 +11,11 @@ import com.udacity.asteroidradar.database.DatabaseAsteroids
 import com.udacity.asteroidradar.databinding.AsteroidListItemBinding
 
 //RecyclerView class
-class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>(AsteroidDiffCallback()){
+class AsteroidListAdapter(val clickListener: AsteroidListener): ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>(AsteroidDiffCallback()){
 
     //Mandatory overrides for ListAdapter
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        holder.bind(clickListener,getItem(position)!!)
     }
 
     //Mandatory overrides for ListAdapter
@@ -24,11 +23,12 @@ class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>
         return ViewHolder.from(parent)
     }
 
-    //Specific ViewHolder. Can create more of these for different types of data.
+    //Specific ViewHolder. Can create more of these for different types of data.[AsteroidListItemBinding relates to the xml of the template, asteroid_list_item.xml]
     class ViewHolder private constructor (val binding: AsteroidListItemBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: Asteroid) {
-            binding.asteroids = item
+        fun bind(clickListener: AsteroidListener, item: Asteroid) {
+            binding.asteroids = item //Bind to the data block in the XML file
+            binding.clickListener = clickListener //Bind to the data block in the XML file
             binding.executePendingBindings()
         }
 
@@ -36,7 +36,7 @@ class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = AsteroidListItemBinding.inflate(layoutInflater,parent,false) //Bind to the asteroid_list_item.xml
+                val binding = AsteroidListItemBinding.inflate(layoutInflater,parent,false)
                 return ViewHolder(binding)
             }
         }
@@ -57,6 +57,11 @@ class AsteroidListAdapter: ListAdapter<Asteroid, AsteroidListAdapter.ViewHolder>
             return oldItem == newItem //Compares all data within the item.
         }
     }
+}
+
+//Listener class for navigating upon a click event.
+class AsteroidListener(val clickListener: (asteroid: Asteroid) -> Unit){
+    fun onClick(asteroid: Asteroid) = clickListener(asteroid)
 }
 
 

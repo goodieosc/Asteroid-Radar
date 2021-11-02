@@ -20,8 +20,10 @@ import kotlin.collections.ArrayList
 @RequiresApi(Build.VERSION_CODES.N)
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
+    //Instantiate database under the application context
+     private val database = getDatabase(application)
 
-    private val database = getDatabase(application)
+    //Instantiate the repository using the AsteroidsDatabase
     private val AsteroidsRepository = AsteroidsRepository(database)
 
 
@@ -30,12 +32,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      */
     init {
         viewModelScope.launch {
-            AsteroidsRepository.refreshAsteroids()
+            AsteroidsRepository.refreshAsteroids()  //Refresh the repository [Download new asteroids from NASA and store into the DB
         }
     }
 
+    //Get the list of Asteroids from the AsteroidsRepository
     val asteroidList = AsteroidsRepository.asteroids
 
+    //Private and exposed to observer for navigation event.
+    private val _navigateToAsteroidEntry = MutableLiveData<Asteroid>()
+    val navigateToAsteroidEntry: LiveData<Asteroid>
+        get() = _navigateToAsteroidEntry
 
+
+    fun onAsteroidEntryClicked(asteroid: Asteroid){
+        _navigateToAsteroidEntry.value = asteroid
+    }
+
+    fun onNavigated() {
+        _navigateToAsteroidEntry.value = null
+    }
 
 }
