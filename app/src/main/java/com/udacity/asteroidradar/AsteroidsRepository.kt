@@ -17,16 +17,18 @@ import org.json.JSONObject
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
-    //Use Transformation.map to convert your LiveData list of DatabaseVideo objects to domain Video objects
-    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.AsteroidDao.getAsteroidsFromDb()){
-        it.asDomainModel()
-    }
-
     //Get today's date and the date 7 days from now
     @RequiresApi(Build.VERSION_CODES.N)
     val dates = getNextSevenDaysFormattedDates()
     val startDate = dates[0]
     val endDate = dates[7]
+
+
+
+    //Use Transformation.map to convert your LiveData list of DatabaseVideo objects to domain Video objects
+    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.AsteroidDao.getAsteroidsFromDb(startDate, endDate)){ //Pass in arguments for query variables
+        it.asDomainModel()
+    }
 
     suspend fun refreshAsteroids(){
         withContext(Dispatchers.IO){ //Dispatcher IO is stating to run on disk, not ram

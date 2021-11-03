@@ -27,6 +27,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val AsteroidsRepository = AsteroidsRepository(database)
 
 
+
+
     /**
      * init{} is called immediately when this ViewModel is created.
      */
