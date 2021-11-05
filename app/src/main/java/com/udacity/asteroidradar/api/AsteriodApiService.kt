@@ -1,12 +1,9 @@
 package com.udacity.asteroidradar.api
 
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.ImageOfTheDay
-import org.json.JSONObject
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -45,7 +42,7 @@ interface neowsApiService {
 // Implement the NeoWs [Near Earth Object Web Service] Interface with @Get getProperties returning a String.
 interface neowsApiServiceGetImageOfTheDay {
     @GET("planetary/apod?api_key=U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec") //BASE_URL is appended with apiParams
-    suspend fun getImageProperties(): List<ImageOfTheDay>
+    suspend fun getImageProperties(): ImageOfTheDay
 }
 
 

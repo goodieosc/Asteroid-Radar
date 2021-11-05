@@ -2,21 +2,14 @@ package com.udacity.asteroidradar.main
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.coroutines.launch
-import java.io.IOException
 
 class MainFragment : Fragment() {
 
@@ -58,7 +51,7 @@ class MainFragment : Fragment() {
 
 
 
-        //viewModel.loadImageOfTheDay(binding.activityMainImageOfTheDay)
+        viewModel.loadImageOfTheDay(binding.activityMainImageOfTheDay,binding.textView)
 
         setHasOptionsMenu(true)
         return binding.root

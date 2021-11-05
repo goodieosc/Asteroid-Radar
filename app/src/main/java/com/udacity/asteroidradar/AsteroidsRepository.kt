@@ -2,11 +2,9 @@ package com.udacity.asteroidradar
 
 import android.os.Build
 import android.util.Log
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.api.*
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.asDomainModel
@@ -34,7 +32,10 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
             try{
                 val asteroidList = neowsApi.retrofitService.getProperties(startDate,endDate,"U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec") //Get the data from the network
+                Log.i("AsteroidsRepository","asteroidList - Success: $asteroidList")
+
                 val formattedAsteroidsList = parseAsteroidsJsonResult(JSONObject(asteroidList))  //Transform JSON into formatted array list.
+                Log.i("AsteroidsRepository","formattedAsteroidsList - Success: $formattedAsteroidsList")
 
                 //Save list to database
                 database.AsteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
