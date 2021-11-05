@@ -4,18 +4,15 @@ import android.app.Application
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidsRepository
-import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
-import com.udacity.asteroidradar.api.neowsApi
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.api.neowsApiImage
 import com.udacity.asteroidradar.database.getDatabase
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Response
-import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.N)
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -35,6 +32,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         viewModelScope.launch {
             AsteroidsRepository.refreshAsteroids()  //Refresh the repository [Download new asteroids from NASA and store into the DB
+            loadImageOfTheDay()
         }
     }
 
@@ -55,4 +53,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _navigateToAsteroidEntry.value = null
     }
 
-}
+
+    fun loadImageOfTheDay() {
+        viewModelScope.launch {
+            try {
+                var asteroidImageUrl = neowsApiImage.retrofitService.getImageProperties() //Get the data from the network
+
+//                val imageUrl = asteroidImageUrl
+//                val imageView: ImageView = image
+//                Picasso.get()
+//                    .load(imageUrl)
+//                    .into(imageView)
+
+                Log.i("AsteroidsImage", "Success: ${asteroidImageUrl.size}")
+
+            } catch (e: Exception) {
+                Log.i("AsteroidsImage", "Failure: ${e.message}")
+            }
+
+        }
+    }
+
+    }
+
+

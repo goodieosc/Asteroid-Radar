@@ -12,3 +12,13 @@ data class Asteroid(val id: Long,
                     val relativeVelocity: Double,
                     val distanceFromEarth: Double,
                     val isPotentiallyHazardous: Boolean) : Parcelable
+
+@Parcelize
+data class ImageOfTheDay(val copyright: String,
+                         val date: String,
+                         val explanation: String,
+                         val hdurl: String,
+                         val media_type: String,
+                         val service_version: String,
+                         val title: String,
+                         val url: String) : Parcelable

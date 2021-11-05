@@ -22,6 +22,8 @@ data class Asteroid(val id: Long,
                     val distanceFromEarth: Double,
                     val isPotentiallyHazardous: Boolean)
 
+
+
 ///**
 // * Convert Network results to database objects
 // */

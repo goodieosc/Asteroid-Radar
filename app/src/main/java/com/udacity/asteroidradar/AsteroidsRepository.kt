@@ -2,13 +2,12 @@ package com.udacity.asteroidradar
 
 import android.os.Build
 import android.util.Log
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.udacity.asteroidradar.api.asDatabaseModel
-import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
-import com.udacity.asteroidradar.api.neowsApi
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.api.*
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.asDomainModel
 import kotlinx.coroutines.Dispatchers
@@ -47,4 +46,6 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
             }
         }
     }
+
+
 }
