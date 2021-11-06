@@ -10,6 +10,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidsRepository
@@ -62,9 +65,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     neowsApiImage.retrofitService.getImageProperties() //Get the data from the network
 
                 //Display image from URL into ImageView
-                Picasso.get()
+//                Picasso.get()
+//                    .load(asteroidImage.url)
+//                    .into(imageView)
+
+                Glide.with(imageView.context)
                     .load(asteroidImage.url)
                     .into(imageView)
+
 
                 titleTextView.text = asteroidImage.title
 
