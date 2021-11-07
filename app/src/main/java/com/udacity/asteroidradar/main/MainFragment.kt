@@ -51,7 +51,7 @@ class MainFragment : Fragment() {
 
 
 
-        viewModel.loadImageOfTheDay(binding.activityMainImageOfTheDay,binding.textView)
+        //viewModel.loadImageOfTheDay(binding.activityMainImageOfTheDay,binding.textView)
 
         setHasOptionsMenu(true)
         return binding.root

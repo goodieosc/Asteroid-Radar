@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.api.*
+import com.udacity.asteroidradar.database.AsteroidDao
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.asDomainModel
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
     val apiKey = BuildConfig.API_KEY //Get API key from gradle.properties file
 
     //Use Transformation.map to convert your LiveData list of DatabaseVideo objects to domain Video objects
-    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.AsteroidDao.getAsteroidsFromDb(startDate, endDate)){ //Pass in arguments for query variables
+    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.asteroidDao.getAsteroidsFromDb(startDate, endDate)){ //Pass in arguments for query variables
         it.asDomainModel()
     }
 
@@ -39,7 +40,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
                 Timber.i("formattedAsteroidsList - Success: $formattedAsteroidsList")
 
                 //Save list to database
-                database.AsteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
+                //database.AsteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
 
                 Timber.i("Success: $formattedAsteroidsList")
 
@@ -48,6 +49,24 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
             }
         }
     }
+
+//    suspend fun refreshImage(){
+//        withContext(Dispatchers.IO){ //Dispatcher IO is stating to run on disk, not ram
+//
+//            try{
+//                val asteroidImage: ImageOfTheDay = neowsApiImage.retrofitService.getImageProperties() //Get the data from the network
+//                Timber.i("asteroidImage - Success: $asteroidImage")
+//
+//                database.ImageDao.insertAll(asteroidImage)
+//
+//
+//                Timber.i("Success: $asteroidImage")
+//
+//            } catch (e: Exception) {
+//                Timber.i("Failure: $e")
+//            }
+//        }
+//    }
 
 
 }

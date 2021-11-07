@@ -1,7 +1,7 @@
 package com.udacity.asteroidradar.api
 
 import com.squareup.moshi.JsonClass
-import com.udacity.asteroidradar.database.DatabaseAsteroids
+import com.udacity.asteroidradar.database.EntityDbTableAsteroids
 import com.udacity.asteroidradar.Asteroid
 
 /**
@@ -24,9 +24,9 @@ data class Asteroid(val id: Long,
 
 
 //create an extension function that converts from data transfer objects to database objects:
-fun List<Asteroid>.asDatabaseModel(): List<DatabaseAsteroids> {
+fun List<Asteroid>.asDatabaseModel(): List<EntityDbTableAsteroids> {
     return map {
-        DatabaseAsteroids (
+        EntityDbTableAsteroids (
             id = it.id,
             codename = it.codename,
             closeApproachDate = it.closeApproachDate,

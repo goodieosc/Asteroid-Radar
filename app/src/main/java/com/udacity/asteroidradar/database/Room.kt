@@ -2,12 +2,13 @@ package com.udacity.asteroidradar.database
 
 import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [DatabaseAsteroids::class], version = 1)
-abstract class AsteroidsDatabase : RoomDatabase() {
-    abstract val AsteroidDao: AsteroidDao
+
+@Database(entities = [EntityDbTableAsteroids::class, EntityDbTableImageOfTheDay::class], version = 2, exportSchema = false)
+abstract class AsteroidsDatabase : RoomDatabase {
+    abstract val asteroidDao: AsteroidDao
+    abstract val imageOfTheDayDao: ImageOfTheDayDao
 }
 
 private lateinit var INSTANCE: AsteroidsDatabase
