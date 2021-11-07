@@ -20,7 +20,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
     val startDate = dates[0]
     val endDate = dates[7]
 
-
+    val apiKey = BuildConfig.API_KEY //Get API key from gradle.properties file
 
     //Use Transformation.map to convert your LiveData list of DatabaseVideo objects to domain Video objects
     val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.AsteroidDao.getAsteroidsFromDb(startDate, endDate)){ //Pass in arguments for query variables
@@ -31,7 +31,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
         withContext(Dispatchers.IO){ //Dispatcher IO is stating to run on disk, not ram
 
             try{
-                val asteroidList = neowsApi.retrofitService.getProperties(startDate,endDate,"U9mndCIzdwnqbnnSEtmWHon1SHywWpkaKRBZsjec") //Get the data from the network
+                val asteroidList = neowsApi.retrofitService.getProperties(startDate,endDate,apiKey) //Get the data from the network
                 Log.i("AsteroidsRepository","asteroidList - Success: $asteroidList")
 
                 val formattedAsteroidsList = parseAsteroidsJsonResult(JSONObject(asteroidList))  //Transform JSON into formatted array list.
