@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar
 
 import android.os.Parcelable
+import com.udacity.asteroidradar.database.EntityDbTableImageOfTheDay
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -22,3 +23,5 @@ data class ImageOfTheDay(val copyright: String,
                          val service_version: String,
                          val title: String,
                          val url: String) : Parcelable
+
+

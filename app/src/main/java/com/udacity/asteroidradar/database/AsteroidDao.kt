@@ -8,9 +8,22 @@ import androidx.room.Query
 
 @Dao
 interface AsteroidDao {
-    @Query("SELECT * FROM DatabaseAsteroids WHERE closeApproachDate BETWEEN date(:from) AND date(:to) ORDER BY closeApproachDate ASC")
-    fun getAsteroidsFromDb(from:String, to:String): LiveData<List<DatabaseAsteroids>> //from and to arguments pass in from repository.
+    //DatabaseAsteroids queries
+    @Query("SELECT * FROM asteroids_table WHERE closeApproachDate BETWEEN date(:from) AND date(:to) ORDER BY closeApproachDate ASC")
+    fun getAsteroidsFromDb(from:String, to:String): LiveData<List<EntityDbTableAsteroids>> //from and to arguments pass in from repository.
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg videos: DatabaseAsteroids)  //varrag takes a variable number of arguments
+    fun insertAll(vararg videos: EntityDbTableAsteroids)  //varrag takes a variable number of arguments
+
+}
+
+@Dao
+interface ImageOfTheDayDao {
+    //ImageOfTheDayTable queries
+    @Query("SELECT * FROM images_table")
+    fun getImageDetailsFromDb(): LiveData<EntityDbTableImageOfTheDay>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertImageRecord(image: EntityDbTableImageOfTheDay)  //varrag takes a variable number of arguments
+
 }

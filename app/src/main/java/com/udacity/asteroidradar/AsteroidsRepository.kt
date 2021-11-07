@@ -6,7 +6,9 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.api.*
+import com.udacity.asteroidradar.api.ImageOfTheDay
 import com.udacity.asteroidradar.database.AsteroidsDatabase
+import com.udacity.asteroidradar.database.EntityDbTableImageOfTheDay
 import com.udacity.asteroidradar.database.asDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,7 +26,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
     val apiKey = BuildConfig.API_KEY //Get API key from gradle.properties file
 
     //Use Transformation.map to convert your LiveData list of DatabaseVideo objects to domain Video objects
-    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.AsteroidDao.getAsteroidsFromDb(startDate, endDate)){ //Pass in arguments for query variables
+    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.asteroidDao.getAsteroidsFromDb(startDate, endDate)){ //Pass in arguments for query variables
         it.asDomainModel()
     }
 
@@ -39,9 +41,28 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
                 Timber.i("formattedAsteroidsList - Success: $formattedAsteroidsList")
 
                 //Save list to database
-                database.AsteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
+                database.asteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
 
                 Timber.i("Success: $formattedAsteroidsList")
+
+            } catch (e: Exception) {
+                Timber.i("Failure: $e")
+            }
+        }
+    }
+
+    suspend fun refreshImages(){
+        withContext(Dispatchers.IO){ //Dispatcher IO is stating to run on disk, not ram
+
+            try{
+                val asteroidImage = neowsApiImage.retrofitService.getImageProperties() //Get the data from the network
+                Timber.i("Get asteroidImage details from NASA - Success: $asteroidImage")
+
+                //Save record to database
+                database.imageOfTheDayDao.insertImageRecord(asteroidImage)
+
+
+                Timber.i("Success: $asteroidImage")
 
             } catch (e: Exception) {
                 Timber.i("Failure: $e")

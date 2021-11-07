@@ -36,6 +36,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             AsteroidsRepository.refreshAsteroids()  //Refresh the repository [Download new asteroids from NASA and store into the DB
         }
+        viewModelScope.launch {
+            AsteroidsRepository.refreshImages()  //Refresh the image of the day [Download new image from NASA and store into the DB
+        }
+
     }
 
     //Get the list of Asteroids from the AsteroidsRepository

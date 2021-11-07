@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [DatabaseAsteroids::class], version = 1)
+@Database(entities = [EntityDbTableAsteroids::class, EntityDbTableImageOfTheDay::class], version = 2, exportSchema = false)
 abstract class AsteroidsDatabase : RoomDatabase() {
-    abstract val AsteroidDao: AsteroidDao
+    abstract val asteroidDao: AsteroidDao
+    abstract val imageOfTheDayDao: ImageOfTheDayDao
 }
 
 private lateinit var INSTANCE: AsteroidsDatabase
@@ -19,7 +20,7 @@ fun getDatabase(context: Context): AsteroidsDatabase {
                 context.applicationContext,
                 AsteroidsDatabase::class.java,
                 "Asteroids"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
         }
     }
     return INSTANCE
