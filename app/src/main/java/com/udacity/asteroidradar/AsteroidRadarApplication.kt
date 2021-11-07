@@ -8,6 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import timber.log.Timber
+import timber.log.Timber.DebugTree
+
 
 class AsteroidRadarApplication: Application() {
 
@@ -16,6 +19,11 @@ class AsteroidRadarApplication: Application() {
     fun OnCreate(){
         super.onCreate()
         delayedInit()
+
+        //Enable Timber logging
+        Timber.plant(DebugTree())
+
+
     }
 
     private fun delayedInit() = applicationScope.launch {

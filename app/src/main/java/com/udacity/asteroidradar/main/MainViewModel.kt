@@ -16,6 +16,7 @@ import com.udacity.asteroidradar.AsteroidsRepository
 import com.udacity.asteroidradar.api.neowsApiImage
 import com.udacity.asteroidradar.database.getDatabase
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -58,13 +59,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun loadImageOfTheDay(imageView: ImageView, titleTextView: TextView) {
         viewModelScope.launch {
             try {
-                var asteroidImage =
+                val asteroidImage =
                     neowsApiImage.retrofitService.getImageProperties() //Get the data from the network
-
-                //Display image from URL into ImageView
-//                Picasso.get()
-//                    .load(asteroidImage.url)
-//                    .into(imageView)
 
                 Glide.with(imageView.context)
                     .load(asteroidImage.url)
@@ -73,10 +69,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 imageView.contentDescription = asteroidImage.explanation
                 titleTextView.text = asteroidImage.title
 
-                Log.i("AsteroidsImage", "Success: ${asteroidImage.url}")
+                Timber.i( "Success: ${asteroidImage.url}")
 
             } catch (e: Exception) {
-                Log.i("AsteroidsImage", "Failure: ${e.message}")
+                Timber.i( "Failure: ${e.message}")
             }
 
         }

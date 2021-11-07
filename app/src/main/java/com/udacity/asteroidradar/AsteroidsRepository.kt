@@ -11,6 +11,7 @@ import com.udacity.asteroidradar.database.asDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import timber.log.Timber
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
@@ -32,18 +33,18 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
             try{
                 val asteroidList = neowsApi.retrofitService.getProperties(startDate,endDate,apiKey) //Get the data from the network
-                Log.i("AsteroidsRepository","asteroidList - Success: $asteroidList")
+                Timber.i("asteroidList - Success: $asteroidList")
 
                 val formattedAsteroidsList = parseAsteroidsJsonResult(JSONObject(asteroidList))  //Transform JSON into formatted array list.
-                Log.i("AsteroidsRepository","formattedAsteroidsList - Success: $formattedAsteroidsList")
+                Timber.i("formattedAsteroidsList - Success: $formattedAsteroidsList")
 
                 //Save list to database
                 database.AsteroidDao.insertAll(*formattedAsteroidsList.asDatabaseModel().toTypedArray()) //Note the asterisk * is the spread operator. It allows you to pass in an array to a function that expects varargs.
 
-                Log.i("AsteroidsRepository","Success: $formattedAsteroidsList")
+                Timber.i("Success: $formattedAsteroidsList")
 
             } catch (e: Exception) {
-                Log.i("AsteroidsRepository","Failure: $e")
+                Timber.i("Failure: $e")
             }
         }
     }
