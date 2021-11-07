@@ -11,9 +11,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidsRepository
 import com.udacity.asteroidradar.api.neowsApiImage
+import com.udacity.asteroidradar.database.EntityDbTableImageOfTheDay
 import com.udacity.asteroidradar.database.getDatabase
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -33,17 +35,30 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * init{} is called immediately when this ViewModel is created.
      */
     init {
+
         viewModelScope.launch {
             AsteroidsRepository.refreshAsteroids()  //Refresh the repository [Download new asteroids from NASA and store into the DB
         }
+
         viewModelScope.launch {
-            AsteroidsRepository.refreshImages()  //Refresh the image of the day [Download new image from NASA and store into the DB
+            AsteroidsRepository.refreshImages()
         }
+
 
     }
 
     //Get the list of Asteroids from the AsteroidsRepository
     val asteroidList = AsteroidsRepository.asteroids
+
+    //Get the image details from the AsteroidsRepository
+    val imageEntry = AsteroidsRepository.imageEntry
+
+    //Private and exposed to observer for navigation event.
+    private val _imageUrl = MutableLiveData<EntityDbTableImageOfTheDay>()
+    val imageUrl: LiveData<EntityDbTableImageOfTheDay>
+        get() = _imageUrl
+
+
 
     //Private and exposed to observer for navigation event.
     private val _navigateToAsteroidEntry = MutableLiveData<Asteroid>()
@@ -60,27 +75,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun loadImageOfTheDay(imageView: ImageView, titleTextView: TextView) {
+    fun downloadImage(imageView: ImageView,asteroidImage: EntityDbTableImageOfTheDay){
         viewModelScope.launch {
-            try {
-                val asteroidImage =
-                    neowsApiImage.retrofitService.getImageProperties() //Get the data from the network
 
-                Glide.with(imageView.context)
-                    .load(asteroidImage.url)
-                    .into(imageView)
-
-                imageView.contentDescription = asteroidImage.explanation
-                titleTextView.text = asteroidImage.title
-
-                Timber.i( "Success: ${asteroidImage.url}")
-
-            } catch (e: Exception) {
-                Timber.i( "Failure: ${e.message}")
-            }
 
         }
+
     }
+
+
 }
 
 

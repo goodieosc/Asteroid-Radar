@@ -1,8 +1,12 @@
 package com.udacity.asteroidradar
 
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
+import com.bumptech.glide.Glide
+import com.udacity.asteroidradar.database.EntityDbTableImageOfTheDay
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
@@ -42,6 +46,24 @@ fun bindTextViewToKmUnit(textView: TextView, number: Double) {
 fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     val context = textView.context
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
+}
+
+@BindingAdapter("mainImage")
+fun bindImageViewToDisplayImageOfTheDay(imageView: ImageView, url: String) {
+
+    try{
+        Glide.with(imageView.context)
+            .load(url)
+            .into(imageView)
+
+        Log.i("BindingAdapters","Success: $url")
+
+    } catch (e: Exception){
+
+        Log.i("BindingAdapters","Failure: $e")
+    }
+
+
 }
 
 

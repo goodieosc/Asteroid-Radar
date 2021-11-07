@@ -2,6 +2,7 @@ package com.udacity.asteroidradar
 
 import android.os.Parcelable
 import com.udacity.asteroidradar.database.EntityDbTableImageOfTheDay
+import com.udacity.asteroidradar.database.ImageOfTheDayDao
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -15,13 +16,27 @@ data class Asteroid(val id: Long,
                     val isPotentiallyHazardous: Boolean) : Parcelable
 
 @Parcelize
-data class ImageOfTheDay(val copyright: String,
-                         val date: String,
+data class ImageOfTheDay(val date: String,
                          val explanation: String,
                          val hdurl: String,
                          val media_type: String,
                          val service_version: String,
                          val title: String,
                          val url: String) : Parcelable
+
+
+//create an extension function that converts from data transfer objects to database objects:
+fun ImageOfTheDay.asImageDatabaseModel(): EntityDbTableImageOfTheDay {
+        return EntityDbTableImageOfTheDay (
+            date = date,
+            explanation = explanation,
+            hdurl = hdurl,
+            media_type = media_type,
+            service_version = service_version,
+            title = title,
+            url = url
+        )
+    }
+
 
 

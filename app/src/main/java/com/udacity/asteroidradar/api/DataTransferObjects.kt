@@ -42,29 +42,29 @@ fun List<Asteroid>.asDatabaseModel(): List<EntityDbTableAsteroids> {
 }
 
 
-@JsonClass(generateAdapter = true)
-data class ImageOfTheDay(val copyright: String,
-                         val date: String,
-                         val explanation: String,
-                         val hdurl: String,
-                         val media_type: String,
-                         val service_version: String,
-                         val title: String,
-                         val url: String)
-
-
-//create an extension function that converts from data transfer objects to database objects:
-fun List<ImageOfTheDay>.asDatabaseModel2(): List<EntityDbTableImageOfTheDay> {
-    return map {
-        EntityDbTableImageOfTheDay (
-            copyright = it.copyright,
-            date = it.date,
-            explanation = it.explanation,
-            hdurl = it.hdurl,
-            media_type = it.media_type,
-            service_version = it.service_version,
-            title = it.title,
-            url = it.url
-        )
-    }
-}
+//@JsonClass(generateAdapter = true)
+//data class ImageOfTheDay(val copyright: String,
+//                         val date: String,
+//                         val explanation: String,
+//                         val hdurl: String,
+//                         val media_type: String,
+//                         val service_version: String,
+//                         val title: String,
+//                         val url: String)
+//
+//
+////create an extension function that converts from data transfer objects to database objects:
+//fun List<ImageOfTheDay>.asDatabaseModel2(): List<EntityDbTableImageOfTheDay> {
+//    return map {
+//        EntityDbTableImageOfTheDay (
+//            copyright = it.copyright,
+//            date = it.date,
+//            explanation = it.explanation,
+//            hdurl = it.hdurl,
+//            media_type = it.media_type,
+//            service_version = it.service_version,
+//            title = it.title,
+//            url = it.url
+//        )
+//    }
+//}

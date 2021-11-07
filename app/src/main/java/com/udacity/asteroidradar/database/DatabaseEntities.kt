@@ -39,7 +39,6 @@ fun List<EntityDbTableAsteroids>.asDomainModel(): List<Asteroid> {
 @Entity(tableName = "images_table")
 data class EntityDbTableImageOfTheDay constructor(
     @PrimaryKey
-    val copyright: String,
     val date: String,
     val explanation: String,
     val hdurl: String,
@@ -52,7 +51,6 @@ data class EntityDbTableImageOfTheDay constructor(
 fun List<EntityDbTableImageOfTheDay>.asImageDomainModel(): List<ImageOfTheDay> {
     return map {
         ImageOfTheDay (
-            copyright = it.copyright,
             date = it.date,
             explanation = it.explanation,
             hdurl = it.hdurl,

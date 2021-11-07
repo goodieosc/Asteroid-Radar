@@ -6,10 +6,10 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.api.*
-import com.udacity.asteroidradar.api.ImageOfTheDay
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.EntityDbTableImageOfTheDay
 import com.udacity.asteroidradar.database.asDomainModel
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -30,12 +30,17 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
         it.asDomainModel()
     }
 
+    //Use Transformation.map to convert your LiveData list of DatabaseVideo objects to domain Video objects
+    val imageEntry: LiveData<EntityDbTableImageOfTheDay> = database.imageOfTheDayDao.getImageDetailsFromDb()
+
     suspend fun refreshAsteroids(){
         withContext(Dispatchers.IO){ //Dispatcher IO is stating to run on disk, not ram
 
             try{
                 val asteroidList = neowsApi.retrofitService.getProperties(startDate,endDate,apiKey) //Get the data from the network
                 Timber.i("asteroidList - Success: $asteroidList")
+                Log.i("AsteroidRepository","asteroidList - Success: $asteroidList")
+
 
                 val formattedAsteroidsList = parseAsteroidsJsonResult(JSONObject(asteroidList))  //Transform JSON into formatted array list.
                 Timber.i("formattedAsteroidsList - Success: $formattedAsteroidsList")
@@ -57,18 +62,21 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
             try{
                 val asteroidImage = neowsApiImage.retrofitService.getImageProperties() //Get the data from the network
                 Timber.i("Get asteroidImage details from NASA - Success: $asteroidImage")
+                Log.i("AsteroidRepository","Get asteroidImage details from NASA - Success: $asteroidImage")
 
                 //Save record to database
-                database.imageOfTheDayDao.insertImageRecord(asteroidImage)
-
+                database.imageOfTheDayDao.insertImageRecord(asteroidImage.asImageDatabaseModel())
 
                 Timber.i("Success: $asteroidImage")
 
             } catch (e: Exception) {
                 Timber.i("Failure: $e")
+                Log.i("AsteroidRepository","Get asteroidImage details from NASA - Failure: $e")
             }
         }
     }
+
+
 
 
 }

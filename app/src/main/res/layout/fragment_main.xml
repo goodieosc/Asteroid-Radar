@@ -28,8 +28,9 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-
-                app:srcCompat="@drawable/placeholder_picture_of_day"/>
+                android:contentDescription="@{viewModel.imageEntry.explanation}"
+                app:srcCompat="@drawable/placeholder_picture_of_day"
+                app:mainImage="@{viewModel.imageEntry.url.toString()}"/>
 
             <TextView
                 android:id="@+id/textView"
@@ -41,7 +42,7 @@
                 android:textSize="20sp"
                 android:layout_gravity="bottom"
                 android:background="#55010613"
-                android:text="This weeks asteroids" />
+                android:text="@{viewModel.imageEntry.title}" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView

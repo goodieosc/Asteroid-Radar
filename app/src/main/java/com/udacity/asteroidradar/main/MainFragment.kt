@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -50,8 +51,6 @@ class MainFragment : Fragment() {
         })
 
 
-
-        //viewModel.loadImageOfTheDay(binding.activityMainImageOfTheDay,binding.textView)
 
         setHasOptionsMenu(true)
         return binding.root
