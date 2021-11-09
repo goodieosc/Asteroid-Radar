@@ -64,10 +64,16 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
                 Timber.i("Get asteroidImage details from NASA - Success: $asteroidImage")
                 Log.i("AsteroidRepository","Get asteroidImage details from NASA - Success: $asteroidImage")
 
-                //Save record to database
-                database.imageOfTheDayDao.insertImageRecord(asteroidImage.asImageDatabaseModel())
 
-                Timber.i("Success: $asteroidImage")
+                //If image of the day is actually an image, save it to the database. If not, don't save to record.
+                if (asteroidImage.media_type == "image"){
+                    //Save record to database
+                    database.imageOfTheDayDao.insertImageRecord(asteroidImage.asImageDatabaseModel())
+                    Timber.i("Saved new Image record to DB: $asteroidImage")
+                } else {
+                    Log.i("AsteroidRepository","Todays entry is a video, not saved to database")
+                    Timber.i("Todays entry is a video, not saved to database [Timber]")
+                }
 
             } catch (e: Exception) {
                 Timber.i("Failure: $e")

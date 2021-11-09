@@ -41,7 +41,7 @@ data class EntityDbTableImageOfTheDay constructor(
     @PrimaryKey
     val date: String,
     val explanation: String,
-    val hdurl: String,
+
     val media_type: String,
     val service_version: String,
     val title: String,
@@ -53,7 +53,7 @@ fun List<EntityDbTableImageOfTheDay>.asImageDomainModel(): List<ImageOfTheDay> {
         ImageOfTheDay (
             date = it.date,
             explanation = it.explanation,
-            hdurl = it.hdurl,
+
             media_type = it.media_type,
             service_version = it.service_version,
             title = it.title,

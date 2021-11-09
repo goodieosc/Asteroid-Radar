@@ -18,7 +18,7 @@ data class Asteroid(val id: Long,
 @Parcelize
 data class ImageOfTheDay(val date: String,
                          val explanation: String,
-                         val hdurl: String,
+
                          val media_type: String,
                          val service_version: String,
                          val title: String,
@@ -30,7 +30,7 @@ fun ImageOfTheDay.asImageDatabaseModel(): EntityDbTableImageOfTheDay {
         return EntityDbTableImageOfTheDay (
             date = date,
             explanation = explanation,
-            hdurl = hdurl,
+
             media_type = media_type,
             service_version = service_version,
             title = title,

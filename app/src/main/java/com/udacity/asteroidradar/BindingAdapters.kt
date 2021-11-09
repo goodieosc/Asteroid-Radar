@@ -48,22 +48,22 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
 
-@BindingAdapter("mainImage")
-fun bindImageViewToDisplayImageOfTheDay(imageView: ImageView, url: String) {
-
-    try{
-        Glide.with(imageView.context)
-            .load(url)
-            .into(imageView)
-
-        Log.i("BindingAdapters","Success: $url")
-
-    } catch (e: Exception){
-
-        Log.i("BindingAdapters","Failure: $e")
-    }
-
-
-}
+//@BindingAdapter("mainImage")
+//fun bindImageViewToDisplayImageOfTheDay(imageView: ImageView, url: String) {
+//
+//    try{
+//        Glide.with(imageView.context)
+//            .load(url)
+//            .into(imageView)
+//
+//        Log.i("BindingAdapters","Success: $url")
+//
+//    } catch (e: Exception){
+//
+//        Log.i("BindingAdapters","Failure: $e")
+//    }
+//
+//
+//}
 
 

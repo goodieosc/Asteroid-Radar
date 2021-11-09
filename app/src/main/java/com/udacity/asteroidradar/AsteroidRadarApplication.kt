@@ -18,11 +18,13 @@ class AsteroidRadarApplication: Application() {
 
     fun OnCreate(){
         super.onCreate()
-        delayedInit()
 
         //Enable Timber logging
-        Timber.plant(DebugTree())
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        }
 
+        delayedInit()
 
     }
 

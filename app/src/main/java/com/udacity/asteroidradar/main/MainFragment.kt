@@ -1,7 +1,9 @@
 package com.udacity.asteroidradar.main
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -19,6 +22,7 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
+    @SuppressLint("LogNotTimber")
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -29,6 +33,8 @@ class MainFragment : Fragment() {
 
         // Giving the binding access to the ViewModel
         binding.viewModel = viewModel
+
+
 
         //Add RecyclerView and configure to listen to click events.
         val adapter = AsteroidListAdapter(AsteroidListener{id -> viewModel.onAsteroidEntryClicked(id)})
@@ -50,6 +56,29 @@ class MainFragment : Fragment() {
             }
         })
 
+
+
+        viewModel.imageEntry.observe(viewLifecycleOwner, Observer {
+            it?.let {
+
+                viewModel.updateImage(binding.activityMainImageOfTheDay, it.url)
+
+//                try{
+//                    Glide.with(binding.activityMainImageOfTheDay.context)
+//                        .load(it.url)
+//                        .into(binding.activityMainImageOfTheDay)
+//
+//                    Log.i("MainFragment","Success: ${it.url}")
+//
+//
+//                } catch (e: Exception){
+//
+//                    Log.i("MainFragment","Failure: $e")
+//                }
+
+            }
+
+        })
 
 
         setHasOptionsMenu(true)

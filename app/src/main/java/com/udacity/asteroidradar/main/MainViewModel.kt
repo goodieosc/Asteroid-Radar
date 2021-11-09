@@ -53,12 +53,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     //Get the image details from the AsteroidsRepository
     val imageEntry = AsteroidsRepository.imageEntry
 
-    //Private and exposed to observer for navigation event.
-    private val _imageUrl = MutableLiveData<EntityDbTableImageOfTheDay>()
-    val imageUrl: LiveData<EntityDbTableImageOfTheDay>
-        get() = _imageUrl
-
-
 
     //Private and exposed to observer for navigation event.
     private val _navigateToAsteroidEntry = MutableLiveData<Asteroid>()
@@ -74,13 +68,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _navigateToAsteroidEntry.value = null
     }
 
+    fun updateImage(image: ImageView, url: String){
+        try{
+            Glide.with(image.context)
+                .load(url)
+                .into(image)
 
-    fun downloadImage(imageView: ImageView,asteroidImage: EntityDbTableImageOfTheDay){
-        viewModelScope.launch {
+            Log.i("MainFragment","Success: ${url}")
 
 
+        } catch (e: Exception){
+
+            Log.i("MainFragment","Failure: $e")
         }
-
     }
 
 
